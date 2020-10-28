@@ -169,9 +169,56 @@ background-image: url("https://www.transparenttextures.com/patterns/diagmonds-li
   margin: 20px auto; 
   font-family: 'Changa', sans-serif;
 }
+
+/**************************cp****************************************************/
+.cp{
+  color: #686d76;
+}
+.cp p{
+  font-size: 1.1rem;
+  color :#c1c0b9;
+}
+.cp ul{
+  font-size: 1.1rem;
+  color :#c1c0b9;
+}
+.cprow{
+  text-align: center;
+  font-size: 1.5rem;
+  margin:0;
+  color : #ffffff;
+}
+.cpp{
+  width : 100%;
+}
+.cpp2{
+  width : 100%;
+  margin: 10%;
+}
+.cpguide{
+  margin: 3rem 0.2rem;
+  word-wrap: break-word;
+}
+.cphead{
+  margin: 5rem 0;
+}
+.eachComp{
+  text-align : center;
+  margin :3rem 0;
+  color : #ffffff;
+}
+
+
 @media only screen and (max-width: 600px) {
+  body{
+    text-align: center;
+  }
   .alert {
     width:80%;
     right : 10%
   }
+  .cpp{
+    width : 50%;
+  }
+
 }

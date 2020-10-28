@@ -3,6 +3,22 @@ import AddIcon from "@material-ui/icons/Add";
 import { Fab,Zoom } from "@material-ui/core";
 import Tasks from './each-task';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import {postTask, fetchTasks ,deleteTask , doneTask} from '../redux/ActionCreators'
+import { connect } from 'react-redux';
+
+const mapStateToProps = state => {
+    return {
+      tasks : state.tasks
+    }
+}
+
+const mapDispatchToProps = (dispatch) => ({
+    postTask : (task) => dispatch(postTask(task)),
+    deleteTask : (taskID) => dispatch(deleteTask(taskID)),
+    fetchTasks : () =>dispatch(fetchTasks()),
+    doneTask : (taskID,status) =>dispatch(doneTask(taskID,status))
+  });
+
 function CreateArea(props) {
   const [task, setTask] = useState({
     title: "",
@@ -85,4 +101,20 @@ function CreateArea(props) {
   );
 }
 
-export default CreateArea;
+class Task extends React.Component{
+
+
+  render()
+  {
+    return <CreateArea 
+    tasks = {this.props.tasks.tasks}
+    postTask = {this.props.postTask}
+    doneTask = {this.props.doneTask}
+    deleteTask = {this.props.deleteTask}
+    isLoading = {this.props.tasks.isLoading}
+    errmess = {this.props.tasks.errmess}/>
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Task);
+//export default CreateArea;

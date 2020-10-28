@@ -1,7 +1,6 @@
 import React from 'react';
 import NewsItem from './news-item';
 function News(props){
-    console.log(props);
     return (
         <div>
             {props.isLoading?

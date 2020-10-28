@@ -4,8 +4,7 @@ import DehazeIcon from '@material-ui/icons/Dehaze';
 import { green } from '@material-ui/core/colors';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Button from '@material-ui/core/Button';
-import { Alert, AlertTitle } from '@material-ui/lab';
-import CloseIcon from '@material-ui/icons/Close';
+import { Alert } from '@material-ui/lab';
 function Header(props){
     const[isOpen,setOpen]=useState(false);
     const[alert,setalert]=useState(false);
@@ -84,7 +83,8 @@ function Header(props){
                         <ul className="clist" onClick={async(event)=>{setOpen(false)}}>
                             <li > <NavLink style={{textDecoration : 'none' , color : green[500]}} to='/home'>Home</NavLink></li>
                             <li onClick={()=>{if(!props.auth.isAuthenticated)setalert(true)}}><NavLink style={{textDecoration : 'none' , color : green[500]}} to='/task'>Manage Tasks</NavLink></li>
-                            <li > <NavLink style={{textDecoration : 'none' , color : green[500]}} to='/news'>News</NavLink></li>
+                            <li > <NavLink style={{textDecoration : 'none' , color : green[500]}} to='/news'>News Wall</NavLink></li>
+                            <li onClick={()=>{if(!props.auth.isAuthenticated)setalert(true)}}><NavLink style={{textDecoration : 'none' , color : green[500]}} to='/cp'>Competitive Coding</NavLink></li>
                         </ul>
                     
                     

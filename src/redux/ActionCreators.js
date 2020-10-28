@@ -1,5 +1,5 @@
 import * as ActionTypes from './ActionTypes';
-import { auth, firestore, fireauth, firebasestore } from '../firebase/firebase';
+import { auth, firestore, fireauth } from '../firebase/firebase';
 
 /***********************LOGIN LOGOUT *******************************************************************************************/
 export const requestLogin = () => {
@@ -225,4 +225,62 @@ export const newsFailed = (errmess) =>({
 export const addNews = (news) => ({
     type: ActionTypes.ADD_NEWS,
     payload: news
+});
+
+/************************************************CONTEST-REQUEST*******************************************************************/
+
+export const fetchCompetitions = ()=>async(dispatch)=>{
+    dispatch(compLoading());
+    var date = new Date();
+    const proxyurl = "https://cors-anywhere.herokuapp.com/";
+    const url =[
+        'https://clist.by/api/v1/contest/?resource__id=1',
+        'https://clist.by/api/v1/contest/?resource__id=2',
+        'https://clist.by/api/v1/contest/?resource__id=35',
+        'https://clist.by/api/v1/contest/?resource__id=102'
+    ]
+
+    var comp=[];
+    // const month = date.getMonth();
+    // date = toString()
+
+    for( var i=0;i<4;i++){
+
+    await fetch(proxyurl+url[i]+'&order_by=start&format=json&start__gte='+date.getFullYear()+'-'+(parseInt(date.getMonth())+1).toString()+'-01T00%3A00%3A00',
+        {
+            headers: {
+                'Authorization': 'ApiKey StudGO:6435c0c6e2a47cf37f64a4cf096a920b8c096bf5',
+            }
+        })
+        .then(response=>{
+            if(response.ok){
+                return response;//passed to below then
+            }
+            else{
+                //this block is executed when connection to server is made but some error is occuring in receiving or posting files
+                var error = new Error("Error "+response.status+": " + response.statusText);//creating error object
+                error.response = response;
+                throw error;
+            }
+        },
+            error =>{
+                var errmess = new Error(error.message);
+                throw errmess;
+        })
+        .then(resp => resp.json())
+        .then(resp=>{comp.push(resp)})
+        .catch(error => dispatch(compFailed(error.message)))
+    }
+    dispatch(addComp(comp));
+}
+export const compLoading = () => ({
+    type: ActionTypes.COMP_LOADING
+});
+
+export const compFailed = () => ({
+    type : ActionTypes.COMP_FAILURE
+});
+export const addComp = (comp) =>({
+    type : ActionTypes.ADD_COMP,
+    payload : comp
 });

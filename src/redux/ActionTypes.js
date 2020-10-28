@@ -10,3 +10,6 @@ export const TASKS_FAILURE = 'TASKS_FAILURE';
 export const NEWS_LOADING = 'NEWS_LOADING';
 export const ADD_NEWS = 'ADD_NEWS';
 export const NEWS_FAILURE = 'NEWS_FAILURE';
+export const COMP_LOADING = 'COMP_LOADING';
+export const ADD_COMP = 'ADD_COMP';
+export const COMP_FAILURE = 'COMP_FAILURE';
