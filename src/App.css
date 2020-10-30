@@ -193,7 +193,7 @@ background-image: url("https://www.transparenttextures.com/patterns/diagmonds-li
 }
 .cpp2{
   width : 100%;
-  margin: 10%;
+  /* margin: 10%; */
 }
 .cpguide{
   margin: 3rem 0.2rem;

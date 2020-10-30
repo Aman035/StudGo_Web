@@ -1,5 +1,12 @@
 import React from 'react';
 import NewsItem from './news-item';
+import { connect } from 'react-redux';
+const mapStateToProps = state => {
+    return {
+      news : state.news
+    }
+}
+
 function News(props){
     return (
         <div>
@@ -20,4 +27,18 @@ function News(props){
         </div>
     )
 }
-export default News;
+
+class NewsComp extends React.Component{
+    render(){
+        return(
+            <News
+                news = {this.props.news.news}
+                isLoading = {this.props.news.isLoading}
+                errmess = {this.props.news.errmess}
+            />
+        )
+    }
+}
+
+export default connect(mapStateToProps)(NewsComp);
+//export default NewsComp;
