@@ -9,10 +9,9 @@ const mapStateToProps = state => {
 }
 function GitQuiz(props){
     return (
-    <div className="container cp">
-        <h3 className="cphead"><center>Ready For a Challange!</center></h3>
-        <h5><center>Git and Github is a very important topic for starting OpenSource Contribution.
-        This Challange will help you to learn some basic commands within no time</center></h5>
+    <div className="container align-c">
+        <h5 className="cp cphead">Git and Github is a very important topic for starting OpenSource Contribution.
+        This Challange will help you to learn some basic commands within no time</h5>
         {
             props.isLoading||props.quiz === null || !props.quiz.length ?
             <Load/>:

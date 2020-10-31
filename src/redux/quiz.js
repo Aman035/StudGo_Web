@@ -6,13 +6,13 @@ export const Quiz = (state={
     errmess : null
 },action)=>{
     switch(action.type){
-        case ActionTypes.COMP_LOADING : 
+        case ActionTypes.QUIZ_LOADING : 
             return {...state, isLoading : true , quiz : null , errmess : null};
 
-        case ActionTypes.COMP_FAILURE : 
+        case ActionTypes.QUIZ_FAILURE : 
             return {...state , isLoading : false , quiz : null , errmess : action.payload};
 
-        case ActionTypes.ADD_COMP : 
+        case ActionTypes.ADD_QUIZ : 
             return {...state , isLoading : false , quiz : action.payload , errmess : null};
 
         default : 
