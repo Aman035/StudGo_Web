@@ -10,7 +10,7 @@ const mapStateToProps = state => {
 function News(props){
     return (
         <div>
-            {props.isLoading?
+            {props.isLoading||props.news === null?
             <div className="row loadingRow">
                 <div className="col-4 offset-4">
                     <span className="fa fa-4x fa-spinner fa-pulse fa-fw"></span>

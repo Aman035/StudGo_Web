@@ -284,3 +284,37 @@ export const addComp = (comp) =>({
     type : ActionTypes.ADD_COMP,
     payload : comp
 });
+
+/*******************************************************************************************************************/
+
+/************************************************QUIZ-REQUEST*******************************************************************/
+
+export const fetchQuiz = ()=>(dispatch)=>{
+    dispatch(quizLoading());
+    firestore.collection('quiz').get()
+        .then(snapshot => {
+            let quiz=[];
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const _id = doc.id
+                quiz.push({_id,...data});
+            });
+            return quiz;
+        })
+    .then(quiz => dispatch(addQuiz(quiz)))
+    .catch(error => dispatch(quizFailed(error.message)));
+}
+
+export const quizLoading = () => ({
+    type: ActionTypes.QUIZ_LOADING
+});
+
+export const quizFailed = () => ({
+    type : ActionTypes.QUIZ_FAILURE
+});
+export const addQuiz = (quiz) =>({
+    type : ActionTypes.ADD_QUIZ,
+    payload : quiz
+});
+
+/*******************************************************************************************************************/
