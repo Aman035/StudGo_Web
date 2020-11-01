@@ -318,3 +318,34 @@ export const addQuiz = (quiz) =>({
 });
 
 /*******************************************************************************************************************/
+/************************************************BLOG-REQUEST*******************************************************************/
+
+export const fetchBlog = ()=>(dispatch)=>{
+    dispatch(blogLoading());
+    firestore.collection('blogs').get()
+        .then(snapshot => {
+            let blogs=[];
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const _id = doc.id
+                blogs.push({_id,...data});
+            });
+            return blogs;
+        })
+    .then(blogs => dispatch(addBlog(blogs)))
+    .catch(error => dispatch(blogFailed(error.message)));
+}
+
+export const blogLoading = () => ({
+    type: ActionTypes.BLOG_LOADING
+});
+
+export const blogFailed = () => ({
+    type : ActionTypes.BLOG_FAILURE
+});
+export const addBlog = (blogs) =>({
+    type : ActionTypes.ADD_BLOG,
+    payload : blogs
+});
+
+/*******************************************************************************************************************/

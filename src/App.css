@@ -223,6 +223,12 @@ background-image: url("https://www.transparenttextures.com/patterns/diagmonds-li
 
 }
 
+.blogpic{
+  height: 14rem;
+  width : 14rem;
+  opacity: 1;
+}
+
 @media only screen and (max-width: 600px) {
   body{
     text-align: center;
@@ -233,6 +239,10 @@ background-image: url("https://www.transparenttextures.com/patterns/diagmonds-li
   }
   .cpp{
     width : 50%;
+  }
+  .blogpic{
+    height : 6rem;
+    width: 6rem;
   }
 
 }
