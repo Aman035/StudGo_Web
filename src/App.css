@@ -32,7 +32,7 @@ background-image: url("https://www.transparenttextures.com/patterns/diagonales-d
 .profilePic{
   height : 30px;
   width : 30px;
-  margin: 0 0.1rem;
+  margin: 0 0.3rem;
   border-radius: 100%;
 }
 .crow{
@@ -155,7 +155,7 @@ padding: 10px;
   text-align: center;
   width:50%;
   position: absolute;
-  top :80%;
+  top :1rem;
   right: 25%;
   z-index: 1;
 }
@@ -222,13 +222,18 @@ background-image: url("https://www.transparenttextures.com/patterns/diagmonds-li
   margin-bottom:2rem ;
 
 }
+.margin-c{
+  margin:10px 5px;
+}
 
 .blogpic{
   height: 14rem;
   width : 14rem;
   opacity: 1;
 }
-
+/* .blog{
+  white-space: pre-line;
+} */
 @media only screen and (max-width: 600px) {
   body{
     text-align: center;

@@ -1,5 +1,5 @@
 import * as ActionTypes from './ActionTypes';
-import { auth, firestore, fireauth } from '../firebase/firebase';
+import { auth, firestore, fireauth,firebasestore } from '../firebase/firebase';
 
 /***********************LOGIN LOGOUT *******************************************************************************************/
 export const requestLogin = () => {
@@ -319,10 +319,53 @@ export const addQuiz = (quiz) =>({
 
 /*******************************************************************************************************************/
 /************************************************BLOG-REQUEST*******************************************************************/
+export const postBlog = (blog) => (dispatch) => {
+
+    if (!auth.currentUser) {
+        console.log('No user logged in!');
+        return;
+    }
+    var newDocRef = firestore.collection('blogs').doc();
+    newDocRef.set({
+        blogWriter : auth.currentUser.email,
+        author : auth.currentUser.displayName,
+        blogID : newDocRef.id,
+        photo : auth.currentUser.photoURL,
+        title : blog.title,
+        content : blog.content,
+        tags : blog.tags,
+        likes : {},
+        createdAt: firebasestore.FieldValue.serverTimestamp()
+    })
+    .then(dispatch(fetchBlog()))
+    .catch(error => dispatch(blogFailed(error.message)));
+}
+export const updateBlog = async(blog)=>{
+
+    if (!auth.currentUser) {
+        console.log('No user logged in!');
+        return;
+    }
+    await firestore.collection('blogs').doc(blog.blogID).update(blog)
+    //dispatch(fetchBlog());
+}
+
+export const deleteBlog = (blogId) => (dispatch) => {
+    if (!auth.currentUser) {
+        console.log('No user logged in!');
+        return;
+    }
+    dispatch(blogLoading())
+    firestore.collection('blogs').doc(blogId).delete()
+    .then(()=>{
+        dispatch(fetchBlog())})
+    .catch(error=> dispatch(blogFailed(error.message)));
+};
+
 
 export const fetchBlog = ()=>(dispatch)=>{
     dispatch(blogLoading());
-    firestore.collection('blogs').get()
+        firestore.collection('blogs').get()
         .then(snapshot => {
             let blogs=[];
             snapshot.forEach(doc => {
@@ -346,6 +389,56 @@ export const blogFailed = () => ({
 export const addBlog = (blogs) =>({
     type : ActionTypes.ADD_BLOG,
     payload : blogs
+});
+
+/*******************************************************************************************************************/
+/************************************************COOMENTS-REQUEST*******************************************************************/
+export const fetchComments = (blogID)=>(dispatch)=>{
+    dispatch(commentLoading());
+        firestore.collection('comments').doc(blogID).collection('comments').get()
+        .then(snapshot => {
+            let comments=[];
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const _id = doc.id
+                comments.push({_id,...data});
+            });
+            return comments;
+        })
+    .then(comments => dispatch(addcomment(comments)))
+    .catch(error => dispatch(commentFailed(error.message)));
+}
+
+
+export const postComment = (comment,blogID) => (dispatch) => {
+
+    console.log(comment);
+    console.log(blogID);
+    if (!auth.currentUser) {
+        console.log('No user logged in!');
+        return;
+    }
+    firestore.collection('comments').doc(blogID).collection('comments').add({
+        comment : comment,
+        displayName : auth.currentUser.displayName,
+        photoUrl : auth.currentUser.photoURL,
+        userEmail : auth.currentUser.email,
+        timestamp : firebasestore.FieldValue.serverTimestamp()
+    })
+    .then(dispatch(fetchComments(blogID)))
+    .catch(error => dispatch(commentFailed(error.message)));
+}
+
+export const commentLoading = () => ({
+    type: ActionTypes.COMMENTS_LOADING
+});
+
+export const commentFailed = () => ({
+    type : ActionTypes.COMMENTS_FAILURE
+});
+export const addcomment = (comments) =>({
+    type : ActionTypes.ADD_COMMENTS,
+    payload : comments
 });
 
 /*******************************************************************************************************************/

@@ -19,3 +19,6 @@ export const QUIZ_FAILURE = 'QUIZ_FAILURE';
 export const BLOG_LOADING = 'BLOG_LOADING';
 export const ADD_BLOG = 'ADD_BLOG';
 export const BLOG_FAILURE = 'BLOG_FAILURE';
+export const COMMENTS_LOADING = 'COMMENTS_LOADING';
+export const ADD_COMMENTS = 'ADD_COMMENTS';
+export const COMMENTS_FAILURE = 'COMMENTS_FAILURE';

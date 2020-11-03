@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import TaskComponent from './task-component';
 import BlogComponent from './blog-component';
 import OSComponent from './OS-component';
+import FullBlog from './fullBlog';
 const mapStateToProps = state => {
     return {
       auth: state.auth
@@ -27,7 +28,7 @@ const mapDispatchToProps = (dispatch) => ({
   
 class Main extends Component{
 
-    componentDidMount(){
+   async componentDidMount(){
         this.props.checkUser();
         this.props.fetchCompetitions();
         this.props.fetchNews();
@@ -63,6 +64,7 @@ class Main extends Component{
                     <PrivateRoute path='/cp' component={CpComponent}/>
                     <PrivateRoute path='/task' component={TaskComponent}/>
                     <PrivateRoute path='/share' component={BlogComponent}/>
+                    <Route path='/blog/:id' component={FullBlog}/>
                     <PrivateRoute path='/open' component={OSComponent}/>
                     <Redirect to='/home'/>
                 </Switch>

@@ -5,6 +5,7 @@ import {News} from './News';
 import {Competitions} from './competitions';
 import {Quiz} from './quiz';
 import {Blogs} from './blogs';
+import {Comments} from './comments';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 export const ConfigureStore = () => {
@@ -15,7 +16,8 @@ export const ConfigureStore = () => {
             news : News ,
             competitions : Competitions,
             quiz : Quiz,
-            blogs : Blogs
+            blogs : Blogs,
+            comments : Comments
         }),
        applyMiddleware(thunk, logger)
     );

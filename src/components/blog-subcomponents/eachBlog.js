@@ -2,105 +2,86 @@ import React from 'react';
 import cx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
+import BrandCardHeader from '@mui-treasury/components/cardHeader/brand';
 import TextInfoContent from '@mui-treasury/components/content/textInfo';
-import { useBlogTextInfoContentStyles } from '@mui-treasury/styles/textInfoContent/blog';
-import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
-
-const useStyles = makeStyles(({ breakpoints, spacing }) => ({
+import { useN03TextInfoContentStyles } from '@mui-treasury/styles/textInfoContent/n03';
+import { useLightTopShadowStyles } from '@mui-treasury/styles/shadow/lightTop';
+import { Link } from 'react-router-dom';
+const useStyles = makeStyles(() => ({
   root: {
-    margin: 'auto',
-    borderRadius: spacing(2), // 16px
-    transition: '0.3s',
-    boxShadow: '0px 14px 80px rgba(34, 35, 58, 0.2)',
-    position: 'relative',
-    maxWidth: 800,
-    maxHeight : 300,
-    marginLeft: 'auto',
-    overflow: 'initial',
-    background: '#ffffff',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    paddingBottom: spacing(2),
-    [breakpoints.up('md')]: {
-      flexDirection: 'row',
-      paddingTop: spacing(2),
-    },
-  },
-  media: {
-    width: '100%',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    marginTop: spacing(-3),
-    height: 0,
-    paddingBottom: '48%',
-    borderRadius: spacing(2),
-    backgroundColor: '#fff',
-    position: 'relative',
-    [breakpoints.up('md')]: {
-      width: '100%',
-      marginLeft: spacing(-3),
-      marginTop: 0,
-      transform: 'translateX(-8px)',
-    },
-    '&:after': {
-      content: '" "',
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      backgroundImage: 'linear-gradient(147deg, #fe8a39 0%, #fd3838 74%)',
-      borderRadius: spacing(2), // 16
-      opacity: 0.5,
-    },
+    margin : 'auto',
+    maxWidth: 700,
+    borderRadius: 20,
   },
   content: {
     padding: 24,
   },
-  cta: {
-    marginTop: 24,
-    textTransform: 'initial',
-  },
 }));
+function ProjectCard(props) {
+  const styles = useN03TextInfoContentStyles();
+  const shadowStyles = useLightTopShadowStyles();
+  const cardStyles = useStyles();
 
-export const BlogCard = React.memo(function BlogCard(props) {
-  const styles = useStyles();
-  const {
-    button: buttonStyles,
-    ...contentStyles
-  } = useBlogTextInfoContentStyles();
-  const shadowStyles = useOverShadowStyles();
 
-  var date = new Date(props.blog.createdAt.seconds*1000 + 19800000);
-  date = date.toISOString().split('T')[0];
+    var date =props.blog.createdAt;
+
+    if(date !==null)
+    {
+      date = new Date(date.seconds*1000 + 19800000)
+      date = date.toISOString().split('T')[0];
+    }
+    else
+    {
+      date = new Date()
+      date = date.toISOString().split('T')[0];
+    }
+
+    // function handleLike(blog,user){
+    //     var like = blog.likes[user];
+    //     if(like === undefined || like === false)
+    //       blog.likes[user] = true;
+    //     else
+    //     blog.likes[user] = false;
+
+    //     console.log(blog.likes[user]);
+
+    //     updateBlog(blog);
+    // }
+
 
   return (
-    <div className="cphead align-c">
-    <Card className={cx(styles.root, shadowStyles.root)}>
-      <CardMedia
-        className='blogpic'
+    <div className="cphead">
+    <Link to={`/blog/${props.blog.blogID}`}>
+    <Card className={cx(cardStyles.root, shadowStyles.root)}>
+      <BrandCardHeader
         image={
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Git_icon.svg/2000px-Git_icon.svg.png'
+          props.blog.photo
         }
+        extra={date}
       />
-      <CardContent>
+      <CardContent className={cardStyles.content}>
         <TextInfoContent
-          classes={contentStyles}
-          overline={date}
+          classes={styles}
+          className ="blog"
+          overline={props.blog.author}
           heading={props.blog.title}
           body={
-            props.blog.content.substring(0,100)+"..."
-          }
+            props.blog.content.substring(0,100).split('\n').map(function(item) {
+          return (
+            <span>
+              {item}
+              <br/>
+            </span>
+          )
+        })}
         />
-        <Button className={buttonStyles}>Read more</Button>
+        {/* <FavoriteIcon onClick={()=>handleLike(props.blog,props.user)}/> */}
       </CardContent>
     </Card>
+    </Link>
     </div>
   );
-});
+};
 
-export default BlogCard;
+export default ProjectCard;
