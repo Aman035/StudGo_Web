@@ -1,6 +1,5 @@
 import * as ActionTypes from './ActionTypes';
 import { auth, firestore, fireauth,firebasestore } from '../firebase/firebase';
-
 /***********************LOGIN LOGOUT *******************************************************************************************/
 export const requestLogin = () => {
     return {
@@ -457,4 +456,62 @@ export const addcomment = (comments) =>({
     payload : comments
 });
 
+/*******************************************************************************************************************/
+
+/*********************************************PROJECT-REQUESTS**********************************************************************/
+export const fetchProjects = ()=>(dispatch)=>{
+    dispatch(projectsLoading());
+        firestore.collection('projects').get()
+        .then(snapshot => {
+            let projects=[];
+            snapshot.forEach(doc => {
+                projects.push(doc.data());
+            });
+            return projects;
+        })
+    .then(projects => dispatch(addProjects(projects)))
+    .catch(error => dispatch(projectsFailed(error.message)));
+}
+
+export const postProject = (project) => (dispatch) => {
+    if (!auth.currentUser) {
+        console.log('No user logged in!');
+        return;
+    }
+    var newDocRef = firestore.collection('projects').doc();
+    newDocRef.set({
+        projectID : newDocRef.id,
+        displayName : auth.currentUser.displayName,
+        photoUrl : auth.currentUser.photoURL,
+        userEmail : auth.currentUser.email,
+        author : auth.currentUser.displayName,
+        timestamp : firebasestore.FieldValue.serverTimestamp(),
+        title : project.title,
+        content : project.content,
+        link : project.link,
+        tags : project.tags
+    })
+    .then(dispatch(fetchProjects()))
+    .catch(error => dispatch(projectsFailed(error.message)));
+}
+
+export const deleteProject = (projectID) => async(dispatch) => {
+    if (!auth.currentUser) {
+        console.log('No user logged in!');
+        return;
+    }
+    await firestore.collection('projects').doc(projectID).delete()
+    dispatch(fetchProjects());
+}
+export const projectsLoading = () => ({
+    type: ActionTypes.PROJECTS_LOADING
+});
+
+export const projectsFailed = () => ({
+    type : ActionTypes.PROJECTS_FAILURE
+});
+export const addProjects = (projects) =>({
+    type : ActionTypes.ADD_PROJECTS,
+    payload : projects
+});
 /*******************************************************************************************************************/
