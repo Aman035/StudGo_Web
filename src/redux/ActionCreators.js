@@ -101,10 +101,12 @@ export const postTask = (task) => (dispatch) => {
         return;
     }
 
-    firestore.collection('tasks').doc(auth.currentUser.email).collection('task').add({
+    var newDocRef = firestore.collection('tasks').doc(auth.currentUser.email).collection('task').doc();
+    newDocRef.set({
         title : task.title,
         content : task.content,
-        done : false
+        done : false,
+        taskID : newDocRef.id,
     })
     .then(dispatch(fetchTasks()))
     .catch(error => dispatch(tasksFailed(error.message)));
@@ -350,16 +352,20 @@ export const updateBlog = async(blog)=>{
     //dispatch(fetchBlog());
 }
 
-export const deleteBlog = (blogId) => (dispatch) => {
+export const deleteBlog = (blogId) => async(dispatch) => {
     if (!auth.currentUser) {
         console.log('No user logged in!');
         return;
     }
     dispatch(blogLoading())
-    firestore.collection('blogs').doc(blogId).delete()
-    .then(()=>{
-        dispatch(fetchBlog())})
-    .catch(error=> dispatch(blogFailed(error.message)));
+    await firestore.collection('blogs').doc(blogId).delete();
+    await firestore.collection('comments').doc(blogId).collection('comments').get()
+        .then(snapshot => {
+            snapshot.forEach(doc => {
+                firestore.collection('comments').doc(blogId).collection('comments').doc(doc.id).delete();
+            });
+        })
+    dispatch(fetchBlog());
 };
 
 
@@ -412,14 +418,14 @@ export const fetchComments = (blogID)=>(dispatch)=>{
 
 export const postComment = (comment,blogID) => (dispatch) => {
 
-    console.log(comment);
-    console.log(blogID);
     if (!auth.currentUser) {
         console.log('No user logged in!');
         return;
     }
-    firestore.collection('comments').doc(blogID).collection('comments').add({
+    var newDocRef = firestore.collection('comments').doc(blogID).collection('comments').doc();
+    newDocRef.set({
         comment : comment,
+        commentID : newDocRef.id,
         displayName : auth.currentUser.displayName,
         photoUrl : auth.currentUser.photoURL,
         userEmail : auth.currentUser.email,
@@ -427,6 +433,16 @@ export const postComment = (comment,blogID) => (dispatch) => {
     })
     .then(dispatch(fetchComments(blogID)))
     .catch(error => dispatch(commentFailed(error.message)));
+}
+
+export const deleteComment = (blogID,commentID) => async(dispatch) => {
+
+    if (!auth.currentUser) {
+        console.log('No user logged in!');
+        return;
+    }
+    await firestore.collection('comments').doc(blogID).collection('comments').doc(commentID).delete()
+    dispatch(fetchComments(blogID))
 }
 
 export const commentLoading = () => ({

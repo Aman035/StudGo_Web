@@ -2,7 +2,7 @@ import React from 'react';
 import Load from './loading-component';
 import {connect} from 'react-redux';
 import BlogPage from './blogPage';
-//import { updateBlog } from '../redux/ActionCreators';
+import { deleteBlog } from '../redux/ActionCreators';
 const mapStateToProps = state => {
     return {
       blogs : state.blogs,
@@ -11,11 +11,12 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  // updateBlog: (blog) => dispatch(updateBlog(blog))
+   deleteBlog: (id) => dispatch(deleteBlog(id))
   });
 
 
 class FullBlog extends React.Component{
+
     render(){
         return (
             <div>
@@ -24,7 +25,7 @@ class FullBlog extends React.Component{
             <BlogPage 
             blog={this.props.blogs.blogs.filter((blog) => blog.blogID === this.props.match.params.id)[0]} 
             auth={this.props.auth}
-            updateBlog = {this.props.updateBlog}
+            deleteBlog = {this.props.deleteBlog}
             />}
             </div>
         )

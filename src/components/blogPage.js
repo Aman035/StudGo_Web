@@ -12,6 +12,8 @@ import Chip from '@material-ui/core/Chip';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import {updateBlog} from '../redux/ActionCreators';
 import Comments from './comments';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import {withRouter} from 'react-router-dom';
 const useStyles = makeStyles(() => ({
   root: {
     margin : 'auto',
@@ -74,6 +76,11 @@ function ProjectCard(props) {
         
     }
 
+    function deleteBlog(){
+      props.deleteBlog(props.blog.blogID);
+      props.history.push('/share');
+    }
+
 
   return (
     <div className="cphead">
@@ -113,11 +120,20 @@ function ProjectCard(props) {
         </div>
         :null}
         {props.auth.isAuthenticated?
-        <div className="align-2">
+        <div className="row">
+        <div className="col-4">
+          {
+            props.blog.blogWriter === props.auth.user.email?
+            <DeleteForeverIcon onClick={deleteBlog}/>:null
+
+          }
+        </div>
+        <div className="align-2 col-8">
         {!liked?
         <FavoriteBorderIcon onClick={()=>handleLike(props.blog,props.auth)}/>:
         <FavoriteIcon  onClick={()=>handleLike(props.blog,props.auth)}/>
          }
+        </div>
         </div>
         :null}
       </CardContent>
@@ -127,4 +143,4 @@ function ProjectCard(props) {
   );
 };
 
-export default ProjectCard;
+export default withRouter(ProjectCard);

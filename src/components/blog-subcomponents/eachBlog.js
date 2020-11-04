@@ -64,17 +64,17 @@ function ProjectCard(props) {
         <TextInfoContent
           classes={styles}
           className ="blog"
-          overline={props.blog.author}
+          overline={"By : "+props.blog.author}
           heading={props.blog.title}
-          body={
-            props.blog.content.substring(0,100).split('\n').map(function(item) {
-          return (
-            <span>
-              {item}
-              <br/>
-            </span>
-          )
-        })}
+        //   body={
+        //     props.blog.content.substring(0,15).split('\n').map(function(item) {
+        //   return (
+        //     <span>
+        //       {item}
+        //       <br/>
+        //     </span>
+        //   )
+        // })}
         />
         {/* <FavoriteIcon onClick={()=>handleLike(props.blog,props.user)}/> */}
       </CardContent>

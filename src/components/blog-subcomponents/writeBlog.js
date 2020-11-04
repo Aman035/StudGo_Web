@@ -28,6 +28,7 @@ function WriteBlog(props){
         }, 3000);
 }
     function submitBlog(event) {
+      if(blog.content.length>40){
       props.post(blog);
       alertSet(true);
         setBlog({
@@ -36,6 +37,7 @@ function WriteBlog(props){
             tags : ""
         });
         event.preventDefault();
+      }
     }
 
         return (
@@ -59,7 +61,7 @@ function WriteBlog(props){
                           name="content"
                           onChange={handleChange}
                           value={blog.content}
-                          placeholder="Write what's on ur mind"
+                          placeholder="Write what's on ur mind(Length should be grater than 40 words)"
                           rows= {10}
                         />
                         <hr/>
