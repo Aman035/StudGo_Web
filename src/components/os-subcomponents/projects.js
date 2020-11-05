@@ -19,20 +19,20 @@ class Projects extends React.Component{
     render(){
         return(
             <div>
-                <div className="row m-0">
-                    <div className="col-12 col-md-6">
+                <div className="row cphead">
                         {
                             this.props.projects.projects.map(project=>{
                                 return (<EachProject key={project.projectID} project={project}/>)
                             })
                         }
-                    </div>
                 </div>
-                <Zoom in={true}>
+                <div className="addpro"> 
+                <Zoom in={true} >
                     <Fab>
-                        <Link to="/addproject"><AddIcon/></Link>
+                        <Link to="/addproject"><AddIcon /></Link>
                     </Fab>
                 </Zoom>
+                </div>
             </div>
         )
     }

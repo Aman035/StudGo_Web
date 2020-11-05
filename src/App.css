@@ -231,9 +231,11 @@ background-image: url("https://www.transparenttextures.com/patterns/diagmonds-li
   width : 14rem;
   opacity: 1;
 }
-/* .blog{
-  white-space: pre-line;
-} */
+.addpro{
+  position: fixed;
+  bottom: 4%;
+  right :4%;
+}
 @media only screen and (max-width: 600px) {
   body{
     text-align: center;

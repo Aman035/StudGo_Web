@@ -489,7 +489,8 @@ export const postProject = (project) => (dispatch) => {
         title : project.title,
         content : project.content,
         link : project.link,
-        tags : project.tags
+        tags : project.tags,
+        upvotes : {}
     })
     .then(dispatch(fetchProjects()))
     .catch(error => dispatch(projectsFailed(error.message)));

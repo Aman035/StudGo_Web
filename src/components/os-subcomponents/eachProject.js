@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 const useStyles = makeStyles(() => ({
   root: {
     margin : 'auto',
-    maxWidth: 700,
+    width : 600,
     borderRadius: 20,
   },
   content: {
@@ -25,7 +25,7 @@ function ProjectCard(props) {
   const cardStyles = useStyles();
   return (
     <Card className={cx(cardStyles.root, shadowStyles.root)}>
-        <Link to={`/blog/${props.blog.blogID}`}>
+        <Link to={`/project/${props.project.projectID}`}>
             <BrandCardHeader
                 image={props.project.photoUrl}
             />
