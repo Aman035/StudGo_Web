@@ -490,7 +490,10 @@ export const postProject = (project) => (dispatch) => {
         content : project.content,
         link : project.link,
         tags : project.tags,
-        upvotes : {}
+        upvotes : {},
+        downvotes : {},
+        upvoteCounter : 0,
+        downvoteCounter : 0
     })
     .then(dispatch(fetchProjects()))
     .catch(error => dispatch(projectsFailed(error.message)));
@@ -504,6 +507,17 @@ export const deleteProject = (projectID) => async(dispatch) => {
     await firestore.collection('projects').doc(projectID).delete()
     dispatch(fetchProjects());
 }
+
+export const updateProject = async(project)=>{
+
+    if (!auth.currentUser) {
+        console.log('No user logged in!');
+        return;
+    }
+    await firestore.collection('projects').doc(project.projectID).update(project)
+    //dispatch(fetchBlog());
+}
+
 export const projectsLoading = () => ({
     type: ActionTypes.PROJECTS_LOADING
 });

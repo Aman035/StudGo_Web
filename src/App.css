@@ -46,10 +46,13 @@ background-image: url("https://www.transparenttextures.com/patterns/diagonales-d
 }
 .clist{
   font-family: 'Changa', sans-serif;
-  margin-top:2rem;
+  margin-top:4rem;
   text-align: justify;
   font-size: 140%;
   list-style: none;
+}
+.clist li{
+  margin : 1rem 0;
 }
 form.create-task {
   margin : 2rem 0;
@@ -250,6 +253,13 @@ background-image: url("https://www.transparenttextures.com/patterns/diagmonds-li
   .blogpic{
     height : 6rem;
     width: 6rem;
+  }
+  .clist{
+    font-family: 'Changa', sans-serif;
+    margin-top:4rem;
+    text-align: justify;
+    font-size: 80%;
+    list-style: none;
   }
 
 }

@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 const useStyles = makeStyles(() => ({
   root: {
     margin : 'auto',
+    marginTop : 20,
     width : 600,
     borderRadius: 20,
   },

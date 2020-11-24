@@ -15,7 +15,7 @@ function EachTask(props)
         <div className="row m-auto">
         {props.tasks.map( (task) =>{
             return(
-                <div className="col-6 col-md-3 task-style" key={task._id}>
+                <div className="col-12 col-md-3 task-style" key={task._id}>
             <div className={task.done?"task-done":"task"} >
                 <h1 className="task-h1">{task.title}</h1>
                 <p className="task-p">{task.content}</p>

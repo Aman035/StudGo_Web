@@ -11,6 +11,7 @@ import BlogComponent from './blog-component';
 import OSComponent from './OS-component';
 import FullBlog from './fullBlog';
 import AddProject from './os-subcomponents/addproject';
+import ProComponent from './os-subcomponents/fullproject';
 const mapStateToProps = state => {
     return {
       auth: state.auth
@@ -65,6 +66,7 @@ class Main extends Component{
                     <Route path='/home' component={HomeComponent}/>
                     <Route path='/news' component={NewsComponent}/>
                     <PrivateRoute path='/cp' component={CpComponent}/>
+                    <PrivateRoute exact path='/project/:id' component={ProComponent}/>
                     <PrivateRoute path='/task' component={TaskComponent}/>
                     <PrivateRoute path='/share' component={BlogComponent}/>
                     <Route path='/blog/:id' component={FullBlog}/>
