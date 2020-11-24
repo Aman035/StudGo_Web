@@ -95,6 +95,8 @@ function Header(props){
                             <li onClick={()=>alertSet()}><NavLink style={{textDecoration : 'none' , color : green[500]}} to='/open'>Open Source Champ</NavLink></li>
                             <li > <NavLink style={{textDecoration : 'none' , color : green[500]}} to='/news'>News Wall</NavLink></li>
                             <li onClick={()=>alertSet()}><NavLink style={{textDecoration : 'none' , color : green[500]}} to='/cp'>CP Master</NavLink></li>
+                            <li onClick={()=>alertSet()}><NavLink style={{textDecoration : 'none' , color : green[500]}} to='/community'>Community Support</NavLink></li>
+                            
                         </ul>
                     
                     

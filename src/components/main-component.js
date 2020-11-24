@@ -12,6 +12,7 @@ import OSComponent from './OS-component';
 import FullBlog from './fullBlog';
 import AddProject from './os-subcomponents/addproject';
 import ProComponent from './os-subcomponents/fullproject';
+import Community from './community-component';
 const mapStateToProps = state => {
     return {
       auth: state.auth
@@ -72,6 +73,7 @@ class Main extends Component{
                     <Route path='/blog/:id' component={FullBlog}/>
                     <PrivateRoute path='/open' component={OSComponent}/>
                     <PrivateRoute path='/addproject' component={AddProject}/>
+                    <PrivateRoute path='/community' component={Community}/>
                     <Redirect to='/home'/>
                 </Switch>
             </div>
