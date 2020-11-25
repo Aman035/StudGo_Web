@@ -44,10 +44,15 @@ function ProjectCard(props) {
     }
 
     const[liked,setLiked] = useState(false);
+    const[likes,setLikes] = useState(0);
 
     useEffect(() => {
         if(props.auth.isAuthenticated && props.blog.likes[props.auth.user.email] === true)
         setLiked(true);
+
+        for (const [key, value] of Object.entries(props.blog.likes)) {
+          if(value === true)setLikes(likes+1);
+      }
     }, []);
 
 
@@ -65,11 +70,13 @@ function ProjectCard(props) {
             {
                 blog.likes[user] = true;
                 setLiked(true);
+                setLikes(likes+1);
             }
             else
             {
                 blog.likes[user] = false;
                 setLiked(false);
+                setLikes(likes-1);
             }
             updateBlog(blog);
         }
@@ -133,6 +140,7 @@ function ProjectCard(props) {
         <FavoriteBorderIcon onClick={()=>handleLike(props.blog,props.auth)}/>:
         <FavoriteIcon  onClick={()=>handleLike(props.blog,props.auth)}/>
          }
+         <h3>{likes}</h3>
         </div>
         </div>
         :null}

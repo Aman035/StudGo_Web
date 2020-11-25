@@ -16,14 +16,14 @@ class OSnav extends React.Component
     return (
         <div>
             <div className="row cprow">
-                <div className="col-3">
+                <div className="col-4">
                     <Button
                     style={this.state.page === 1?{outline : 'none',color : green[500],fontSize : '80%'}:{outline : 'none',color : 'white',fontSize : '80%'}}
                         onClick={async ()=>await this.setState({page : 1})}>
                         Guide
                     </Button>
                 </div>
-                <div className="col-5">
+                <div className="col-4">
                     <Button 
                         style={this.state.page ===2?{outline : 'none' ,color : green[500],fontSize : '80%'}:{outline : 'none',color : 'white',fontSize : '80%'}}
                         onClick={async()=> await this.setState({page :2})}>

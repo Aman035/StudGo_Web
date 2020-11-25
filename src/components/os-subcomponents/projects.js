@@ -1,5 +1,4 @@
 import React from 'react';
-import {postProject} from '../../redux/ActionCreators';
 import {connect} from 'react-redux';
 import EachProject from './eachProject';
 import {Link} from 'react-router-dom';
@@ -10,11 +9,6 @@ const mapStateToProps = state => {
       projects: state.projects
     }
 }
-
-const mapDispatchToProps = (dispatch) => ({
-    postProject  : (project)=> dispatch(postProject(project))
-  });
-
 class Projects extends React.Component{
     render(){
         return(
@@ -37,4 +31,4 @@ class Projects extends React.Component{
         )
     }
 }
-export default connect(mapStateToProps,mapDispatchToProps)(Projects);
+export default connect(mapStateToProps)(Projects);

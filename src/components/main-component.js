@@ -4,7 +4,7 @@ import HomeComponent from './home-component';
 import NewsComponent from './news-component';
 import CpComponent from './cp-component';
 import Header from './header-component';
-import {googleLogin,logoutUser,checkUser,fetchNews ,fetchCompetitions , fetchQuiz , fetchBlog,fetchProjects} from '../redux/ActionCreators'
+import {googleLogin,logoutUser,checkUser,fetchNews ,fetchCompetitions , fetchQuiz , fetchBlog,fetchProjects,fetchQuestions} from '../redux/ActionCreators'
 import { connect } from 'react-redux';
 import TaskComponent from './task-component';
 import BlogComponent from './blog-component';
@@ -27,7 +27,8 @@ const mapDispatchToProps = (dispatch) => ({
     fetchCompetitions : ()=>dispatch(fetchCompetitions()),
     fetchQuiz : ()=>dispatch(fetchQuiz()),
     fetchBlog : ()=>dispatch(fetchBlog()),
-    fetchProjects : ()=>dispatch(fetchProjects())
+    fetchProjects : ()=>dispatch(fetchProjects()),
+    fetchQuestions : ()=>dispatch(fetchQuestions())
   });
   
 class Main extends Component{
@@ -39,6 +40,7 @@ class Main extends Component{
         this.props.fetchQuiz();
         this.props.fetchBlog();
         this.props.fetchProjects();
+        this.props.fetchQuestions();
     }
 
     componentWillUnmount(){

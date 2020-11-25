@@ -530,3 +530,76 @@ export const addProjects = (projects) =>({
     payload : projects
 });
 /*******************************************************************************************************************/
+
+/*********************************************QUESTION-REQUESTS**********************************************************************/
+export const fetchQuestions = ()=>(dispatch)=>{
+    dispatch(questionsLoading());
+        firestore.collection('questions').get()
+        .then(snapshot => {
+            let questions=[];
+            snapshot.forEach(doc => {
+                questions.push(doc.data());
+            });
+            return questions;
+        })
+    .then(questions => dispatch(addQuestions(questions)))
+    .catch(error => dispatch(questionsFailed(error.message)));
+}
+
+// export const postProject = (project) => (dispatch) => {
+//     if (!auth.currentUser) {
+//         console.log('No user logged in!');
+//         return;
+//     }
+//     var newDocRef = firestore.collection('projects').doc();
+//     newDocRef.set({
+//         projectID : newDocRef.id,
+//         displayName : auth.currentUser.displayName,
+//         photoUrl : auth.currentUser.photoURL,
+//         userEmail : auth.currentUser.email,
+//         author : auth.currentUser.displayName,
+//         timestamp : firebasestore.FieldValue.serverTimestamp(),
+//         title : project.title,
+//         content : project.content,
+//         link : project.link,
+//         tags : project.tags,
+//         upvotes : {},
+//         downvotes : {},
+//         upvoteCounter : 0,
+//         downvoteCounter : 0
+//     })
+//     .then(dispatch(fetchProjects()))
+//     .catch(error => dispatch(projectsFailed(error.message)));
+// }
+
+// export const deleteProject = (projectID) => async(dispatch) => {
+//     if (!auth.currentUser) {
+//         console.log('No user logged in!');
+//         return;
+//     }
+//     await firestore.collection('projects').doc(projectID).delete()
+//     dispatch(fetchProjects());
+// }
+
+// export const updateProject = async(project)=>{
+
+//     if (!auth.currentUser) {
+//         console.log('No user logged in!');
+//         return;
+//     }
+//     await firestore.collection('projects').doc(project.projectID).update(project)
+//     //dispatch(fetchBlog());
+// }
+
+export const questionsLoading = () => ({
+    type: ActionTypes.QUESTIONS_LOADING
+});
+
+export const questionsFailed = () => ({
+    type : ActionTypes.QUESTIONS_FAILURE
+});
+export const addQuestions = (questions) =>({
+    type : ActionTypes.ADD_QUESTIONS,
+    payload : questions
+});
+/*******************************************************************************************************************/
