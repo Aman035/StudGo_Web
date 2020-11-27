@@ -146,18 +146,18 @@ function ProjectCard(props) {
         </div>
         <div className="align-2 col-8">
         <div className="row">
-          <div className="col-11">
+          <div className="col-9 col-md-11">
             <ArrowUpwardIcon color={vote===1?"secondary":""} onClick={()=>handleUpvotes(props.project,props.auth)}/>
           </div>
-          <div className="col-1 align">
+          <div className="col-3 col-md-1 align">
             <h5>{props.project.upvoteCounter}</h5>
           </div>
         </div>
         <div className="row">
-          <div className="col-11">
+          <div className="col-9 col-md-11">
             <ArrowDownwardIcon color={vote===-1?"secondary":""} onClick={()=>handleDownvotes(props.project,props.auth)}/>
           </div>
-          <div className="col-1 align">
+          <div className="col-3 col-md-1 align">
             <h5>{props.project.downvoteCounter}</h5>
           </div>
         </div>
