@@ -11,7 +11,9 @@ import BlogComponent from './blog-component';
 import OSComponent from './OS-component';
 import FullBlog from './fullBlog';
 import AddProject from './os-subcomponents/addproject';
+import AddQuestion from './community-subcomponents/post_questions';
 import ProComponent from './os-subcomponents/fullproject';
+import QuestionComponent from './community-subcomponents/full-question';
 import Community from './community-component';
 const mapStateToProps = state => {
     return {
@@ -70,11 +72,13 @@ class Main extends Component{
                     <Route path='/news' component={NewsComponent}/>
                     <PrivateRoute path='/cp' component={CpComponent}/>
                     <PrivateRoute exact path='/project/:id' component={ProComponent}/>
+                    <PrivateRoute exact path='/question/:id' component={QuestionComponent}/>
                     <PrivateRoute path='/task' component={TaskComponent}/>
                     <PrivateRoute path='/share' component={BlogComponent}/>
                     <Route path='/blog/:id' component={FullBlog}/>
                     <PrivateRoute path='/open' component={OSComponent}/>
                     <PrivateRoute path='/addproject' component={AddProject}/>
+                    <PrivateRoute path='/addquestion' component={AddQuestion}/>
                     <PrivateRoute path='/community' component={Community}/>
                     <Redirect to='/home'/>
                 </Switch>

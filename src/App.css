@@ -239,6 +239,15 @@ background-image: url("https://www.transparenttextures.com/patterns/diagmonds-li
   bottom: 4%;
   right :4%;
 }
+.questions p{
+  color: #f8f1f1;
+}
+.questions h5{
+  color: #393e46;
+}
+.questions a{
+  color : #f8f1f1;
+}
 @media only screen and (max-width: 600px) {
   body{
     text-align: center;

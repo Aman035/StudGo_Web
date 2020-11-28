@@ -13,7 +13,8 @@ const useStyles = makeStyles(() => ({
   root: {
     margin : 'auto',
     marginTop : 20,
-    width : 600,
+    maxWidth : 600,
+    width : '90%',
     borderRadius: 20,
   },
   content: {
