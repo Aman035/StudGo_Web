@@ -8,6 +8,7 @@ import {Blogs} from './blogs';
 import {Comments} from './comments';
 import {Projects} from './projects';
 import {Questions} from './Questions';
+import {Answers} from './Answers';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 export const ConfigureStore = () => {
@@ -21,7 +22,8 @@ export const ConfigureStore = () => {
             blogs : Blogs,
             comments : Comments,
             projects : Projects,
-            questions : Questions
+            questions : Questions,
+            answers : Answers
         }),
        applyMiddleware(thunk, logger)
     );

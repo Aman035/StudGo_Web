@@ -573,7 +573,13 @@ export const deleteQuestion = (questionID) => async(dispatch) => {
         console.log('No user logged in!');
         return;
     }
-    await firestore.collection('questions').doc(questionID).delete()
+    await firestore.collection('questions').doc(questionID).delete();
+    await firestore.collection('answers').doc(questionID).collection('answers').get()
+        .then(snapshot => {
+            snapshot.forEach(doc => {
+                firestore.collection('answers').doc(questionID).collection('answers').doc(doc.id).delete();
+            });
+        })
     dispatch(fetchQuestions());
 }
 
@@ -589,4 +595,64 @@ export const addQuestions = (questions) =>({
     type : ActionTypes.ADD_QUESTIONS,
     payload : questions
 });
+/*******************************************************************************************************************/
+/*********************************************QUESTION-REQUESTS*****************************************************/
+export const fetchAnswers = (questionID)=>(dispatch)=>{
+    dispatch(answersLoading());
+        firestore.collection('answers').doc(questionID).collection('answers').get()
+        .then(snapshot => {
+            let answers=[];
+            snapshot.forEach(doc => {
+                answers.push(doc.data());
+            });
+            return answers;
+        })
+    .then(ans => dispatch(addAnswers(ans)))
+    .catch(error => dispatch(answerFailed(error.message)));
+}
+
+
+export const postAnswer = (answer,questionID) => (dispatch) => {
+
+    if (!auth.currentUser) {
+        console.log('No user logged in!');
+        return;
+    }
+    var newDocRef = firestore.collection('answers').doc(questionID).collection('answers').doc();
+    newDocRef.set({
+        answer : answer,
+        answerID : newDocRef.id,
+        author : auth.currentUser.displayName,
+        photoUrl : auth.currentUser.photoURL,
+        userEmail : auth.currentUser.email,
+        timestamp : firebasestore.FieldValue.serverTimestamp(),
+        upvotes : {},
+        downvotes : {}
+    })
+    .then(dispatch(fetchAnswers(questionID)))
+    .catch(error => dispatch(answerFailed(error.message)));
+}
+
+export const deleteAnswer = (questionID,answerID) => async(dispatch) => {
+
+    if (!auth.currentUser) {
+        console.log('No user logged in!');
+        return;
+    }
+    await firestore.collection('answers').doc(questionID).collection('answers').doc(answerID).delete()
+    dispatch(fetchAnswers(questionID))
+}
+
+export const answersLoading = () => ({
+    type: ActionTypes.ANSWERS_LOADING
+});
+
+export const answerFailed = () => ({
+    type : ActionTypes.ANSWERS_FAILURE
+});
+export const addAnswers = (answers) =>({
+    type : ActionTypes.ADD_ANSWERS,
+    payload : answers
+});
+
 /*******************************************************************************************************************/
