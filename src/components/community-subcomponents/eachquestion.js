@@ -23,7 +23,6 @@ const useStyles = makeStyles(() => ({
   },
 }));
 function QuestionCard(props) {
-  const styles = useN03TextInfoContentStyles();
   const shadowStyles = useLightTopShadowStyles();
   const cardStyles = useStyles();
   return (
@@ -34,7 +33,17 @@ function QuestionCard(props) {
             <CardContent className="questions">
             <p>{"By : "+props.question.author}</p>
             <center>
-            <h5>{props.question.question}</h5>
+            <div>
+              {
+                  props.question.question.split('\n').map(function(item) {
+              return (
+                  <span>
+                  {item}
+                  <br/>
+                  </span>
+              )
+              })}
+            </div>
             <h6>
                 <Link to={`/question/${props.question.questionID}`}>See Answers
                 </Link>  

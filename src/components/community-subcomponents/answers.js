@@ -1,148 +1,249 @@
-// import React , {useState}from 'react';
-// import {connect} from 'react-redux';
-// import cx from 'clsx';
-// import { makeStyles } from '@material-ui/core/styles';
-// import Card from '@material-ui/core/Card';
-// import CardContent from '@material-ui/core/CardContent';
-// import TextInfoContent from '@mui-treasury/components/content/textInfo';
-// import { useN03TextInfoContentStyles } from '@mui-treasury/styles/textInfoContent/n03';
-// import { useLightTopShadowStyles } from '@mui-treasury/styles/shadow/lightTop';
-// import {postComment,fetchComments,deleteComment} from '../redux/ActionCreators';
-// import Load from './loading-component';
-// import AddIcon from "@material-ui/icons/Add";
-// import { Fab,Zoom } from "@material-ui/core";
-// import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-// const mapStateToProps = state => {
-//     return {
-//       answers : state.answers,
-//       auth : state.auth
-//     }
-//   }
+import React , {useState,useEffect} from 'react';
+import {connect} from 'react-redux';
+import cx from 'clsx';
+import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import TextInfoContent from '@mui-treasury/components/content/textInfo';
+import BrandCardHeader from '@mui-treasury/components/cardHeader/brand';
+import { useN03TextInfoContentStyles } from '@mui-treasury/styles/textInfoContent/n03';
+import { useLightTopShadowStyles } from '@mui-treasury/styles/shadow/lightTop';
+import {postAnswer,fetchAnswers,deleteAnswer,updateAnswer} from '../../redux/ActionCreators';
+import Load from '../loading-component';
+import AddIcon from "@material-ui/icons/Add";
+import { Fab,Zoom } from "@material-ui/core";
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 
-// const mapDispatchToProps = (dispatch) => ({
-//    postComment: (comment,blogID) => dispatch(postComment(comment,blogID)),
-//    fetchComments: (blogID) => dispatch(fetchComments(blogID)),
-//    deleteComment: (blogID,commentID) => dispatch(deleteComment(blogID,commentID))
-// });
+const mapStateToProps = state => {
+    return {
+      answers : state.answers,
+      auth : state.auth
+    }
+  }
 
-// const useStyles = makeStyles(() => ({
-//     root: {
-//       margin : 'auto',
-//       marginTop :1,
-//       maxWidth: 1000,
-//       borderRadius: 20,
-//     },
-//     content: {
-//       padding:  10,
-//     },
-//   }));
+const mapDispatchToProps = (dispatch) => ({
+   postAnswer: (answer,questionID) => dispatch(postAnswer(answer,questionID)),
+   fetchAnswers: (questionID) => dispatch(fetchAnswers(questionID)),
+   deleteAnswer: (questionID,answerID) => dispatch(deleteAnswer(questionID,answerID))
+});
+
+const useStyles = makeStyles(() => ({
+    root: {
+      margin : 'auto',
+      marginTop :40,
+      Width: 800,
+      maxWidth :'80%',
+      borderRadius: 50,
+      backgroundColor: '#a3a29d',
+      backgroundImage: 'url("https://www.transparenttextures.com/patterns/gplay.png")'
+    },
+    content: {
+      padding:  10,
+    },
+  }));
   
-// function AllComments(props){
-//     const styles = useN03TextInfoContentStyles();
-//     const shadowStyles = useLightTopShadowStyles();
-//     const cardStyles = useStyles();
-//     return (
-//         <Card className={cx(cardStyles.root, shadowStyles.root)}>
-//           <CardContent className={cardStyles.content}>
-//               <TextInfoContent
-//                 classes={styles}
-//                 body={
-//                   <div className="container">
-//                     <div className="row">
-//                         <div className="col-1 align-2">
-//                           <img src={props.comment.photoUrl} className="profilePic" alt="comment"/>
-//                         </div>
-//                         <div className="col-7">
-//                             {props.comment.comment}
-//                         </div>
-//                         <div className="align-2 col-3">
-//                                 By-{props.comment.displayName}
-//                         </div>
-//                         <div className="col-1 align-2">
-//                           {
-//                             props.auth.isAuthenticated && props.auth.user.email === props.comment.userEmail?
-//                             <DeleteForeverIcon onClick={()=>props.deleteComment(props.blogID,props.comment.commentID)}/>:null
-//                           }
-//                         </div>
-//                     </div>
-//                     </div>
-//                     }
-//               />
-//           </CardContent>
-//         </Card>
-//   );
-// }
+function AllAnswers(props){
+    const shadowStyles = useLightTopShadowStyles();
+    const cardStyles = useStyles();
 
+    const[vote,setVote] = useState(0);
 
-// function AddCommentComp(props){
+    useEffect(() => {
+        if(props.auth.isAuthenticated && props.answer.upvotes[props.auth.user.email] === true)
+          setVote(1);
+        else{
+          if(props.auth.isAuthenticated && props.answer.downvotes[props.auth.user.email] === true)
+            setVote(-1);
+        }
+    }, []);
+  
+    function handleUpvotes(answer,auth){
+        if(auth.isAuthenticated)
+        {
+            var user = auth.user.email;
+            var upvote = answer.upvotes[user];
+            if(upvote === undefined || upvote === false)
+            {
+                answer.upvotes[user] = true;
+                setVote(1);
+                answer.upvoteCounter+=1;
+                if(answer.downvotes[user] === true){
+                  answer.downvotes[user] = false;
+                  answer.downvoteCounter-=1;
+                }
+  
+            }
+            else
+            {
+                answer.upvotes[user] = false;
+                setVote(0);
+                answer.upvoteCounter-=1;
+            }
+            updateAnswer(props.questionID,props.answer.answerID,answer);
+        }
+    }
+  
+    function handleDownvotes(answer,auth){
+      if(auth.isAuthenticated)
+      {
+          var user = auth.user.email;
+          var downvote = answer.downvotes[user];
+          if(downvote === undefined || downvote === false)
+          {
+              answer.downvotes[user] = true;
+              setVote(-1);
+              answer.downvoteCounter+=1;
+              if(answer.upvotes[user] === true){
+                answer.upvotes[user] = false;
+                answer.upvoteCounter-=1;
+              }
+          }
+          else
+          {
+            answer.downvotes[user] = false;
+            setVote(0);
+            answer.downvoteCounter-=1;
+          }
+          updateAnswer(props.questionID,props.answer.answerID,answer);
+      }
+  }
+  
+  
+  
+  
+  
+      function deleteAnswer(){
+        props.deleteAnswer(props.questionID,props.answer.answerID);
+      }
 
-//     const [comment, setComment] = useState("");
-    
-//     function submitComment(event){
-//       event.preventDefault();
-//         props.postComment(comment,props.blogID);
-//         setComment("");
-
-//     }
-
-//       function handleChange(event) {
-//         const value = event.target.value;
-//         setComment(value);
-//       }
-
-//     return (
-//         <div className="row m-0">
-//           <div className="col-12 col-md-8 offset-md-2">
-//             <form  className="create-task">
-//                 <input
-//                   name="comment"
-//                   onChange={handleChange}
-//                   value={comment}
-//                   placeholder="Add Comment"/>
-//                 <div className="align-2">
-//                   <Zoom in={true}>
-//                     <Fab type="submit" onClick={submitComment}>
-//                       <AddIcon />
-//                     </Fab>
-//                   </Zoom>
-//                 </div>
-//             </form>
-//           </div>
-//         </div>
-//   );
-// }
-
-
-// class Comments extends React.Component{
-//     componentDidMount(){
-//         this.props.fetchComments(this.props.blogID)
-//     }
-//     render(){
-//         return(
-//         <div>
-//             {this.props.comments.isLoading || this.props.comments.comments ===null?
-//             <Load/>:
-//             <div className="cphead">
-//               {this.props.auth.isAuthenticated?
-//                 <AddCommentComp postComment={this.props.postComment} blogID = {this.props.blogID}/>:null}
-//                 {
-//                     this.props.comments.comments.map(comment=>{
-//                     return <AllComments comment={comment} auth ={this.props.auth} key={comment._id} deleteComment={this.props.deleteComment} blogID = {this.props.blogID}/>})
-//                 }
-//             </div>
-//             }
-//         </div>
-//         )
-// }}
-// export default connect(mapStateToProps,mapDispatchToProps)(Comments);
-            
-
-import React from 'react';
-function Answers(){
-    return(
-        <div>
-
-        </div>
-    )
+    return (
+        
+        <Card className={cx(cardStyles.root, shadowStyles.root)}>
+            <BrandCardHeader
+                image={props.answer.photoUrl}
+            />
+            <CardContent className="questions">
+            <p>{"By : "+props.answer.author}</p>
+            <center>
+            <div>
+                {
+                    props.answer.answer.split('\n').map(function(item) {
+                return (
+                    <h5>
+                    {item}
+                    </h5>
+                )
+                })}
+            </div>
+            </center> 
+            {props.auth.isAuthenticated?
+            <div className="row">
+                <div className="col-4">
+                {
+                    props.answer.userEmail === props.auth.user.email?
+                    <DeleteForeverIcon onClick={deleteAnswer}/>:null
+                }
+                </div>
+                <div className="align-2 col-8">
+                    <div className="row">
+                        <div className="col-9 col-md-11">
+                            <ArrowUpwardIcon color={vote===1?"secondary":""} onClick={()=>handleUpvotes(props.answer,props.auth)}/>
+                        </div>
+                        <div className="col-3 col-md-1 align">
+                            <h5>{props.answer.upvoteCounter}</h5>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-9 col-md-11">
+                            <ArrowDownwardIcon color={vote===-1?"secondary":""} onClick={()=>handleDownvotes(props.answer,props.auth)}/>
+                        </div>
+                        <div className="col-3 col-md-1 align">
+                            <h5>{props.answer.downvoteCounter}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            :null} 
+            </CardContent>
+    </Card>
+  );
 }
-export default Answers;
+
+
+function AddAnswerComp(props){
+
+    const [answer, setAnswer] = useState("");
+    
+    function submitAnswer(event){
+      event.preventDefault();
+        props.postAnswer(answer,props.questionID);
+        setAnswer("");
+
+    }
+
+      function handleChange(event) {
+        const value = event.target.value;
+        setAnswer(value);
+      }
+
+      const [isClicked, SetClicked] = useState(false);
+
+      function handleAnswerclick() {
+        SetClicked(true);
+      }
+
+    return (
+        <div className="row m-0">
+          <div className="col-12 col-md-8 offset-md-2" onClick={handleAnswerclick}>
+            <form  className="create-task">
+                <textarea
+                name="answer"
+                onChange={handleChange}
+                value={answer}
+                placeholder="Add your answer"
+                rows={isClicked ? 6 : 1}
+            />
+                <div className="align-2">
+                  <Zoom in={true}>
+                    <Fab type="submit" onClick={submitAnswer}>
+                      <AddIcon />
+                    </Fab>
+                  </Zoom>
+                </div>
+            </form>
+          </div>
+        </div>
+  );
+}
+
+
+class Answers extends React.Component{
+    componentDidMount(){
+        this.props.fetchAnswers(this.props.questionID)
+    }
+    render(){
+        return(
+        <div>
+            {this.props.answers.isLoading || this.props.answers.answers ===null?
+            <Load/>:
+            <div className="cphead">
+              {this.props.auth.isAuthenticated?
+                <AddAnswerComp postAnswer={this.props.postAnswer} questionID = {this.props.questionID}/>:null}
+                {
+                    this.props.answers.answers.map(answer=>{
+                    return <AllAnswers 
+                        answer={answer} 
+                        auth ={this.props.auth} 
+                        key={answer.answerID} 
+                        deleteAnswer={this.props.deleteAnswer}
+                        updateAnswer={this.props.updateAnswer} 
+                        questionID = {this.props.questionID}/>})
+                }
+            </div>
+            }
+        </div>
+        )
+}}
+export default connect(mapStateToProps,mapDispatchToProps)(Answers);

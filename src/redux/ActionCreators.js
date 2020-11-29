@@ -562,7 +562,9 @@ export const postQuestion = (question) => (dispatch) => {
         question : question.question,
         tags : question.tags,
         upvotes : {},
-        downvotes : {}
+        downvotes : {},
+        upvoteCounter : 0,
+        downvoteCounter : 0
     })
     .then(dispatch(fetchQuestions()))
     .catch(error => dispatch(questionsFailed(error.message)));
@@ -583,6 +585,14 @@ export const deleteQuestion = (questionID) => async(dispatch) => {
     dispatch(fetchQuestions());
 }
 
+export const updateQuestion = async(question)=>{
+
+    if (!auth.currentUser) {
+        console.log('No user logged in!');
+        return;
+    }
+    await firestore.collection('questions').doc(question.questionID).update(question);
+}
 
 export const questionsLoading = () => ({
     type: ActionTypes.QUESTIONS_LOADING
@@ -596,7 +606,7 @@ export const addQuestions = (questions) =>({
     payload : questions
 });
 /*******************************************************************************************************************/
-/*********************************************QUESTION-REQUESTS*****************************************************/
+/*********************************************ANSWERS-REQUESTS*****************************************************/
 export const fetchAnswers = (questionID)=>(dispatch)=>{
     dispatch(answersLoading());
         firestore.collection('answers').doc(questionID).collection('answers').get()
@@ -627,7 +637,9 @@ export const postAnswer = (answer,questionID) => (dispatch) => {
         userEmail : auth.currentUser.email,
         timestamp : firebasestore.FieldValue.serverTimestamp(),
         upvotes : {},
-        downvotes : {}
+        downvotes : {},
+        upvoteCounter : 0,
+        downvoteCounter : 0
     })
     .then(dispatch(fetchAnswers(questionID)))
     .catch(error => dispatch(answerFailed(error.message)));
@@ -642,6 +654,14 @@ export const deleteAnswer = (questionID,answerID) => async(dispatch) => {
     await firestore.collection('answers').doc(questionID).collection('answers').doc(answerID).delete()
     dispatch(fetchAnswers(questionID))
 }
+export const updateAnswer = async(questionID,answerID,answer)=>{
+
+    if (!auth.currentUser) {
+        console.log('No user logged in!');
+        return;
+    }
+    await firestore.collection('answers').doc(questionID).collection('answers').doc(answerID).update(answer);
+}
 
 export const answersLoading = () => ({
     type: ActionTypes.ANSWERS_LOADING
@@ -654,5 +674,7 @@ export const addAnswers = (answers) =>({
     type : ActionTypes.ADD_ANSWERS,
     payload : answers
 });
+
+
 
 /*******************************************************************************************************************/
