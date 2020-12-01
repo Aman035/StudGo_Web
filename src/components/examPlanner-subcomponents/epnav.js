@@ -5,7 +5,6 @@ import NewPlan from './newPlan';
 import AllPlans from './allplans';
 import {connect} from 'react-redux';
 import {postPlan} from '../../redux/ActionCreators';
-
 const mapStateToProps = state => {
     return {
       plans : state.plans,
@@ -38,7 +37,7 @@ class Epnav extends React.Component
                     <Button 
                         style={!this.state.WriteOn?{outline : 'none' ,color : green[500],fontSize : '80%'}:{outline : 'none',color : 'white',fontSize : '80%'}}
                         onClick={async()=> await this.setState({WriteOn :false})}>
-                        All Plans
+                        My Plans
                     </Button>
                 </div>
             </div>
