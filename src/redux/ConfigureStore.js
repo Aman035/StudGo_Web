@@ -9,6 +9,7 @@ import {Comments} from './comments';
 import {Projects} from './projects';
 import {Questions} from './Questions';
 import {Answers} from './Answers';
+import {Plans} from './examPlanner';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 export const ConfigureStore = () => {
@@ -23,7 +24,8 @@ export const ConfigureStore = () => {
             comments : Comments,
             projects : Projects,
             questions : Questions,
-            answers : Answers
+            answers : Answers,
+            plans : Plans
         }),
        applyMiddleware(thunk, logger)
     );

@@ -678,3 +678,74 @@ export const addAnswers = (answers) =>({
 
 
 /*******************************************************************************************************************/
+
+/*********************************************Exam-Planner**************************************************************/
+
+export const fetchPlans = (questionID)=>(dispatch)=>{
+    dispatch(answersLoading());
+        firestore.collection('answers').doc(questionID).collection('answers').get()
+        .then(snapshot => {
+            let answers=[];
+            snapshot.forEach(doc => {
+                answers.push(doc.data());
+            });
+            return answers;
+        })
+    .then(ans => dispatch(addAnswers(ans)))
+    .catch(error => dispatch(answerFailed(error.message)));
+}
+
+
+export const postPlan = (plan) => (dispatch) => {
+
+    // if (!auth.currentUser) {
+    //     console.log('No user logged in!');
+    //     return;
+    // }
+    // var newDocRef = firestore.collection('answers').doc(questionID).collection('answers').doc();
+    // newDocRef.set({
+    //     answer : answer,
+    //     answerID : newDocRef.id,
+    //     author : auth.currentUser.displayName,
+    //     photoUrl : auth.currentUser.photoURL,
+    //     userEmail : auth.currentUser.email,
+    //     timestamp : firebasestore.FieldValue.serverTimestamp(),
+    //     upvotes : {},
+    //     downvotes : {},
+    //     upvoteCounter : 0,
+    //     downvoteCounter : 0
+    // })
+    // .then(dispatch(fetchAnswers(questionID)))
+    // .catch(error => dispatch(answerFailed(error.message)));
+}
+
+export const deletePlan = (questionID,answerID) => async(dispatch) => {
+
+    if (!auth.currentUser) {
+        console.log('No user logged in!');
+        return;
+    }
+    await firestore.collection('answers').doc(questionID).collection('answers').doc(answerID).delete()
+    dispatch(fetchAnswers(questionID))
+}
+export const updatePlan = async(questionID,answerID,answer)=>{
+
+    if (!auth.currentUser) {
+        console.log('No user logged in!');
+        return;
+    }
+    await firestore.collection('answers').doc(questionID).collection('answers').doc(answerID).update(answer);
+}
+
+export const plansLoading = () => ({
+    type: ActionTypes.PLANS_LOADING
+});
+
+export const planFailed = () => ({
+    type : ActionTypes.PLANS_FAILURE
+});
+export const addPlans = (plans) =>({
+    type : ActionTypes.ADD_PLANS,
+    payload : plans
+});
+/*******************************************************************************************************************/
