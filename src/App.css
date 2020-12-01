@@ -248,6 +248,9 @@ background-image: url("https://www.transparenttextures.com/patterns/diagmonds-li
 .questions a{
   color : #f8f1f1;
 }
+.padbtn{
+  margin: 0 2rem;
+}
 @media only screen and (max-width: 600px) {
   body{
     text-align: center;

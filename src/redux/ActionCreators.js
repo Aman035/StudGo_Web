@@ -719,22 +719,36 @@ export const fetchPlans = ()=>async(dispatch)=>{
 }
 
 
-export const postPlan = (plan) => (dispatch) => {
-
+export const postPlan = (plan) => async(dispatch) => {
 
     if (!auth.currentUser) {
         console.log('No user logged in!');
         return;
     }
 
-    var newDocRef = firestore.collection('schedules').doc(auth.currentUser.email).collection('schedule').doc();
-    newDocRef.set({
+    var newDocRef = await firestore.collection('schedules').doc(auth.currentUser.email).collection('schedule').doc();
+    await newDocRef.set({
         title : plan.title,
         dayCount : plan.dayCount,
         scheduleID : newDocRef.id,
     })
-    .then(dispatch(fetchPlans(auth.currentUser.email)))
-    .catch(error => dispatch(plansFailed(error.message)));
+
+    for(var i=0;i<plan.dayCount;i++)
+    {
+        var day = "day"+(i+1).toString();
+        var ref =await firestore.collection('schedules').doc(auth.currentUser.email).collection('schedule').doc(newDocRef.id).collection('dayPlan').doc(day);
+        await ref.set({
+            day : i+1,
+            subjects : []
+        })
+    }
+
+    try {
+        dispatch(fetchPlans());
+      }
+      catch(err) {
+        dispatch(plansFailed(err));
+      }
 
 }
 
