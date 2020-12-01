@@ -96,6 +96,7 @@ function Header(props){
                             <li > <NavLink style={{textDecoration : 'none' , color : green[500]}} to='/news'>News Wall</NavLink></li>
                             <li onClick={()=>alertSet()}><NavLink style={{textDecoration : 'none' , color : green[500]}} to='/cp'>CP Master</NavLink></li>
                             <li onClick={()=>alertSet()}><NavLink style={{textDecoration : 'none' , color : green[500]}} to='/community'>Community Support</NavLink></li>
+                            <li onClick={()=>alertSet()}><NavLink style={{textDecoration : 'none' , color : green[500]}} to='/examplanner'>Exam Planner</NavLink></li>
                             
                         </ul>
                     
