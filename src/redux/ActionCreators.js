@@ -20,7 +20,8 @@ export const checkUser = ()=>(dispatch)=>{
                 localStorage.setItem('user', JSON.stringify(user));
                 // Dispatch the success action
                 dispatch(receiveLogin(user));
-                (dispatch(fetchTasks()))
+                dispatch(fetchTasks());
+                dispatch(fetchPlans());
                 firestore.collection('users').doc(user.email).get()
                 .then( doc =>{
                     if(!doc.exists){
@@ -681,42 +682,60 @@ export const addAnswers = (answers) =>({
 
 /*********************************************Exam-Planner**************************************************************/
 
-export const fetchPlans = (questionID)=>(dispatch)=>{
-    dispatch(answersLoading());
-        firestore.collection('answers').doc(questionID).collection('answers').get()
-        .then(snapshot => {
-            let answers=[];
-            snapshot.forEach(doc => {
-                answers.push(doc.data());
-            });
-            return answers;
+export const fetchPlans = ()=>async(dispatch)=>{
+
+    if (!auth.currentUser) {
+        console.log('No user logged in!');
+        return;
+    }
+    var user = auth.currentUser;
+    dispatch(plansLoading(true));
+    let plans=[];
+    let snapshot = await firestore.collection('schedules').doc(auth.currentUser.email).collection('schedule').get()
+    snapshot.forEach(async(doc) => {
+        let plan = {};
+        const data = await doc.data();
+        plan.id = data.scheduleID;
+        plan.dayCount = data.dayCount;
+        plan.title = data.title;
+
+        let snap = await firestore.collection('schedules').doc(auth.currentUser.email).collection('schedule').doc(plan.id).collection('dayPlan').get()
+        let eachDay = [];
+        snap.forEach(async(document) => {
+            const dayData = await document.data();
+            eachDay.push(dayData);
         })
-    .then(ans => dispatch(addAnswers(ans)))
-    .catch(error => dispatch(answerFailed(error.message)));
+        plan.plan = eachDay;
+        plans.push(plan);
+    })
+
+    try {
+        dispatch(addPlans(plans));
+      }
+      catch(err) {
+        dispatch(plansFailed(err));
+      }
+
 }
 
 
 export const postPlan = (plan) => (dispatch) => {
 
-    // if (!auth.currentUser) {
-    //     console.log('No user logged in!');
-    //     return;
-    // }
-    // var newDocRef = firestore.collection('answers').doc(questionID).collection('answers').doc();
-    // newDocRef.set({
-    //     answer : answer,
-    //     answerID : newDocRef.id,
-    //     author : auth.currentUser.displayName,
-    //     photoUrl : auth.currentUser.photoURL,
-    //     userEmail : auth.currentUser.email,
-    //     timestamp : firebasestore.FieldValue.serverTimestamp(),
-    //     upvotes : {},
-    //     downvotes : {},
-    //     upvoteCounter : 0,
-    //     downvoteCounter : 0
-    // })
-    // .then(dispatch(fetchAnswers(questionID)))
-    // .catch(error => dispatch(answerFailed(error.message)));
+
+    if (!auth.currentUser) {
+        console.log('No user logged in!');
+        return;
+    }
+
+    var newDocRef = firestore.collection('schedules').doc(auth.currentUser.email).collection('schedule').doc();
+    newDocRef.set({
+        title : plan.title,
+        dayCount : plan.dayCount,
+        scheduleID : newDocRef.id,
+    })
+    .then(dispatch(fetchPlans(auth.currentUser.email)))
+    .catch(error => dispatch(plansFailed(error.message)));
+
 }
 
 export const deletePlan = (questionID,answerID) => async(dispatch) => {
@@ -741,7 +760,7 @@ export const plansLoading = () => ({
     type: ActionTypes.PLANS_LOADING
 });
 
-export const planFailed = () => ({
+export const plansFailed = () => ({
     type : ActionTypes.PLANS_FAILURE
 });
 export const addPlans = (plans) =>({
