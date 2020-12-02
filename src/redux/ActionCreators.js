@@ -704,10 +704,23 @@ export const fetchPlans = ()=>async(dispatch)=>{
             const dayData = document.data();
             eachDay.push(dayData);
         })
+
+        function compare( a, b ) {
+            if ( a.day < b.day ){
+              return -1;
+            }
+            if ( a.day > b.day ){
+              return 1;
+            }
+            return 0;
+          }
+
+          eachDay.sort(compare);
+
         plan.plan = eachDay;
         plans.push(plan);
     })
-
+      
     try {
         dispatch(addPlans(plans));
       }
@@ -751,20 +764,15 @@ export const postPlan = (plan) => (dispatch) => {
 
 }
 
-export const deletePlan = (id) => (dispatch) => {
+export const deletePlan = (id) => async(dispatch) => {
 
     if (!auth.currentUser) {
         console.log('No user logged in!');
         return;
     }
-    firestore.collection('schedules').doc(auth.currentUser.email).collection('schedule').doc(id).delete();
+    await firestore.collection('schedules').doc(auth.currentUser.email).collection('schedule').doc(id).delete();
 
-    try {
-        dispatch(fetchPlans());
-      }
-      catch(err) {
-        dispatch(plansFailed(err));
-      }
+        await dispatch(fetchPlans());
 
 }
 
