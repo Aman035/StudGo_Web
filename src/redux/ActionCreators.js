@@ -688,21 +688,20 @@ export const fetchPlans = ()=>async(dispatch)=>{
         console.log('No user logged in!');
         return;
     }
-    var user = auth.currentUser;
     dispatch(plansLoading(true));
     let plans=[];
     let snapshot = await firestore.collection('schedules').doc(auth.currentUser.email).collection('schedule').get()
-    snapshot.forEach(async(doc) => {
+    await snapshot.forEach(async(doc) => {
         let plan = {};
-        const data = await doc.data();
+        const data = doc.data();
         plan.id = data.scheduleID;
         plan.dayCount = data.dayCount;
         plan.title = data.title;
 
         let snap = await firestore.collection('schedules').doc(auth.currentUser.email).collection('schedule').doc(plan.id).collection('dayPlan').get()
         let eachDay = [];
-        snap.forEach(async(document) => {
-            const dayData = await document.data();
+        await snap.forEach((document) => {
+            const dayData = document.data();
             eachDay.push(dayData);
         })
         plan.plan = eachDay;
@@ -719,15 +718,15 @@ export const fetchPlans = ()=>async(dispatch)=>{
 }
 
 
-export const postPlan = (plan) => async(dispatch) => {
+export const postPlan = (plan) => (dispatch) => {
 
     if (!auth.currentUser) {
         console.log('No user logged in!');
         return;
     }
 
-    var newDocRef = await firestore.collection('schedules').doc(auth.currentUser.email).collection('schedule').doc();
-    await newDocRef.set({
+    var newDocRef = firestore.collection('schedules').doc(auth.currentUser.email).collection('schedule').doc();
+    newDocRef.set({
         title : plan.title,
         dayCount : plan.dayCount,
         scheduleID : newDocRef.id,
@@ -736,8 +735,8 @@ export const postPlan = (plan) => async(dispatch) => {
     for(var i=0;i<plan.dayCount;i++)
     {
         var day = "day"+(i+1).toString();
-        var ref =await firestore.collection('schedules').doc(auth.currentUser.email).collection('schedule').doc(newDocRef.id).collection('dayPlan').doc(day);
-        await ref.set({
+        var ref =firestore.collection('schedules').doc(auth.currentUser.email).collection('schedule').doc(newDocRef.id).collection('dayPlan').doc(day);
+        ref.set({
             day : i+1,
             subjects : []
         })
@@ -752,22 +751,21 @@ export const postPlan = (plan) => async(dispatch) => {
 
 }
 
-export const deletePlan = (questionID,answerID) => async(dispatch) => {
+export const deletePlan = (id) => (dispatch) => {
 
     if (!auth.currentUser) {
         console.log('No user logged in!');
         return;
     }
-    await firestore.collection('answers').doc(questionID).collection('answers').doc(answerID).delete()
-    dispatch(fetchAnswers(questionID))
-}
-export const updatePlan = async(questionID,answerID,answer)=>{
+    firestore.collection('schedules').doc(auth.currentUser.email).collection('schedule').doc(id).delete();
 
-    if (!auth.currentUser) {
-        console.log('No user logged in!');
-        return;
-    }
-    await firestore.collection('answers').doc(questionID).collection('answers').doc(answerID).update(answer);
+    try {
+        dispatch(fetchPlans());
+      }
+      catch(err) {
+        dispatch(plansFailed(err));
+      }
+
 }
 
 export const plansLoading = () => ({
@@ -782,3 +780,41 @@ export const addPlans = (plans) =>({
     payload : plans
 });
 /*******************************************************************************************************************/
+export const deleteSubject = (id,day,subjectName,subjects) => async(dispatch) => {
+
+    if (!auth.currentUser) {
+        console.log('No user logged in!');
+        return;
+    }
+    for( var i = 0; i < subjects.length; i++){ 
+    
+        if ( subjects[i].subject === subjectName) { 
+    
+            subjects.splice(i, 1); 
+            break;
+        }
+    
+    }
+    var newDocRef = await firestore.collection('schedules').doc(auth.currentUser.email).collection('schedule').doc(id).collection('dayPlan').doc("day"+day.toString());
+    await newDocRef.set({
+        day : day,
+        subjects : subjects
+    });
+
+    return subjects;
+
+    
+}
+export const updateSubject = async(subject,id,day)=>{
+
+    if (!auth.currentUser) {
+        console.log('No user logged in!');
+        return;
+    }
+
+    var newDocRef = await firestore.collection('schedules').doc(auth.currentUser.email).collection('schedule').doc(id).collection('dayPlan').doc("day"+day.toString());
+    await newDocRef.set({
+        day : day,
+        subjects : subject
+    })
+}

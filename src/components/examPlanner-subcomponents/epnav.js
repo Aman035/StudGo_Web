@@ -5,6 +5,8 @@ import {connect} from 'react-redux';
 import {postPlan} from '../../redux/ActionCreators';
 import EachPlan from './eachPlan';
 import NewPlan from './newPlan';
+import Load from '../loading-component';
+import AllPlans from './allplans';
 const mapStateToProps = state => {
     return {
       plans : state.plans,
@@ -19,12 +21,13 @@ const mapDispatchToProps = (dispatch) => ({
 class Epnav extends React.Component
 {
     state={
-        WriteOn : false
+        WriteOn : true
     }
     render(){
         
     return (
         <div>
+            <div>
             <div className="row cprow">
                 <div className="col-6 col-md-4 offset-md-2">
                     <Button
@@ -42,16 +45,11 @@ class Epnav extends React.Component
                 </div>
             </div>
             {!this.state.WriteOn?
-                <div className="row cphead">
-                        {
-                            this.props.plans.plans.map(plan=>{
-                                return (<EachPlan key={plan.id} plan={plan}/>)
-                            })
-                        }
-                </div>
+                <AllPlans plans ={this.props.plans}/>
                 :
                 <NewPlan post ={this.props.postPlan}/>
             }
+            </div>
         </div>
     )
 }

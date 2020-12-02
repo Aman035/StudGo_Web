@@ -13,6 +13,7 @@ const mapDispatchToProps = (dispatch) => ({
   });
 
 class FullPlan extends React.Component{
+
     render(){
         return (
             <div>

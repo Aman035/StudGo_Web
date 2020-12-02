@@ -25,7 +25,7 @@ function PlanCard(props) {
     const cardStyles = useStyles();
 
     function deletePlan(){
-        props.deletePlan(props.plan.scheduleID);
+        props.deletePlan(props.plan.id);
         props.history.push('/examplanner');
     }
 
@@ -39,13 +39,13 @@ function PlanCard(props) {
                     className ="blog"
                     heading={props.plan.title}
                     />
-                    {/* <div>
+                    <div>
                         <div className="row">
-                            <div className="col-4">
-                                <DeleteForeverIcon onClick={deletePlan}/>
+                            <div className="col-12 align-c">
+                                Delete Plan<DeleteForeverIcon onClick={deletePlan}/>
                             </div>
                         </div>
-                    </div> */}
+                    </div>
                 </CardContent>
             </Card>
             <DayPlan plan = {props.plan.plan} id={props.plan.id}/>
