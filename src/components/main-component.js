@@ -16,6 +16,7 @@ import ProComponent from './os-subcomponents/fullproject';
 import QuestionComponent from './community-subcomponents/full-question';
 import Community from './community-component';
 import ExamPlanner from './examPlanner-component';
+import FullPlan from './examPlanner-subcomponents/fullplan';
 const mapStateToProps = state => {
     return {
       auth: state.auth
@@ -82,6 +83,7 @@ class Main extends Component{
                     <PrivateRoute path='/addquestion' component={AddQuestion}/>
                     <PrivateRoute path='/community' component={Community}/>
                     <PrivateRoute path='/examplanner' component={ExamPlanner}/>
+                    <PrivateRoute path='/plan/:id' component={FullPlan}/>
                     <Redirect to='/home'/>
                 </Switch>
             </div>

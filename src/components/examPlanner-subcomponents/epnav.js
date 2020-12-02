@@ -1,10 +1,10 @@
 import React from 'react';
 import { green } from '@material-ui/core/colors';
 import Button from '@material-ui/core/Button';
-import NewPlan from './newPlan';
-import AllPlans from './allplans';
 import {connect} from 'react-redux';
 import {postPlan} from '../../redux/ActionCreators';
+import EachPlan from './eachPlan';
+import NewPlan from './newPlan';
 const mapStateToProps = state => {
     return {
       plans : state.plans,
@@ -41,9 +41,16 @@ class Epnav extends React.Component
                     </Button>
                 </div>
             </div>
-            {this.state.WriteOn?
-                <NewPlan post = {this.props.postPlan}/>:
-                <AllPlans plans ={this.props.plans} auth ={this.props.auth}/>
+            {!this.state.WriteOn?
+                <div className="row cphead">
+                        {
+                            this.props.plans.plans.map(plan=>{
+                                return (<EachPlan key={plan.id} plan={plan}/>)
+                            })
+                        }
+                </div>
+                :
+                <NewPlan post ={this.props.postPlan}/>
             }
         </div>
     )
