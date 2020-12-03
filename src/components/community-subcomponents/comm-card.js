@@ -9,9 +9,12 @@ import Chip from '@material-ui/core/Chip';
 const useStyles = makeStyles({
   root: {
     maxWidth: '90%',
+    margin : 'auto'
   },
   media: {
     height: 140,
+    margin : 'auto',
+    width : "70%"
   },
 });
 
@@ -21,12 +24,8 @@ export default function MediaCard(props) {
   return (
     <div className="col-12 col-md-6 align-c mt-5">
     <Card className={classes.root}>
-      <CardActionArea>
-        <CardMedia
-          className={classes.media}
-          image={props.comm.image}
-        />
         <CardContent>
+        <img src = {props.comm.image} alt="communities image" className="comm"/>
           <Typography gutterBottom variant="h5" component="h2">
             {props.comm.Name}
           </Typography>
@@ -45,7 +44,6 @@ export default function MediaCard(props) {
             }
           </Typography>
         </CardContent>
-      </CardActionArea>
     </Card>
     </div>
   );

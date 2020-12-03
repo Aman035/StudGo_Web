@@ -251,6 +251,9 @@ background-image: url("https://www.transparenttextures.com/patterns/diagmonds-li
 .padbtn{
   margin: 0 2rem;
 }
+.comm{
+  height : 6rem;
+}
 @media only screen and (max-width: 600px) {
   body{
     text-align: center;
