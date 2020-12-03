@@ -45,7 +45,7 @@ function EachComp(props){
                 </div>
                 <div className="col-md-4 col-12 mt-4">
                     <TimerIcon/>
-                    <h6>{props.comp.duration}</h6>
+                    <h6>{props.comp.duration/3600} H</h6>
                 </div>
                 <div className="col-md-3 col-6 offset-md-3 mt-4">
                     <a href={props.comp.href}><TouchAppIcon/>Visit</a>

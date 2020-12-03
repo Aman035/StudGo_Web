@@ -20,6 +20,7 @@ const mapDispatchToProps = (dispatch) => ({
 const useStyles = makeStyles(() => ({
     root: {
         margin : 'auto',
+        marginTop :10,
         maxWidth: 700,
         borderRadius: 20,
         backgroundColor: '#a3a29d',

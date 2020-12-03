@@ -14,13 +14,13 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  postPlan : (plan)=> dispatch(postPlan(plan))
+  postPlan : async(plan)=> await dispatch(postPlan(plan))
 });
 
 class Epnav extends React.Component
 {
     state={
-        WriteOn : false
+        WriteOn : true
     }
     render(){
         

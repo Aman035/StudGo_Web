@@ -37,8 +37,8 @@ function NewPlan(props){
         };
     })}
 
-    function handlePlan(){
-        props.post(plan);
+    async function handlePlan(){
+        await props.post(plan);
         setPlan({
             title : "",
             dayCount : 0

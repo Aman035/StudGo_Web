@@ -11,7 +11,7 @@ import {withRouter} from 'react-router-dom';
 import DayPlan from './dayPlan';
 const useStyles = makeStyles(() => ({
   root: {
-    margin : 'auto',
+    margin :'auto',
     maxWidth: 1100,
     borderRadius: 20,
   },
