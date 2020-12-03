@@ -3,7 +3,6 @@ import React from 'react';
 function Guide(){
     return (
         <div className="container cp">
-            <h3 className="cphead"><center>Communities</center></h3>
             <div className="row cpguide">
                 <div className="col-md-4 col-12">
                     <img src="/assets/images/comm/1.jpg" alt="Cp pic" className="cpp"/>
