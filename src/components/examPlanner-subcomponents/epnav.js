@@ -9,8 +9,7 @@ import Load from '../loading-component';
 import AllPlans from './allplans';
 const mapStateToProps = state => {
     return {
-      plans : state.plans,
-      auth : state.auth
+      plans : state.plans
     }
 }
 
@@ -21,7 +20,7 @@ const mapDispatchToProps = (dispatch) => ({
 class Epnav extends React.Component
 {
     state={
-        WriteOn : true
+        WriteOn : false
     }
     render(){
         

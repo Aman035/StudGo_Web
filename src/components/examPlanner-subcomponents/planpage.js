@@ -24,8 +24,8 @@ function PlanCard(props) {
     const shadowStyles = useLightTopShadowStyles();
     const cardStyles = useStyles();
 
-    function deletePlan(){
-        props.deletePlan(props.plan.id);
+    async function deletePlan(){
+        await props.deletePlan(props.plan.id);
         props.history.push('/examplanner');
     }
 
