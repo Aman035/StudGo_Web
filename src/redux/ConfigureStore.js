@@ -27,7 +27,7 @@ export const ConfigureStore = () => {
             answers : Answers,
             plans : Plans
         }),
-       applyMiddleware(thunk, logger)
+       applyMiddleware(thunk)
     );
 
     return store;

@@ -254,7 +254,6 @@ export const fetchCompetitions = ()=>async(dispatch)=>{
             }
         })
         .then(response=>{
-            console.log(response);
             if(response.ok){
                 return response;//passed to below then
             }
