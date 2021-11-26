@@ -5,7 +5,7 @@ function NewsItem(props){
         <div className="col-10  offset-1 col-md-8 offet-md-2 news-item">
             <h3>{props.news.title}</h3>
             <div className="align-2">
-               <h5><a style={{textDecoration : 'none' , color : green[700]}} href={props.news.url}>Know More</a></h5>
+               <h5><a style={{textDecoration : 'none' , color : green[700]}} href={props.news.url} target="_blank" rel="noopener noreferrer">Know More</a></h5>
             </div>
         </div>
     )

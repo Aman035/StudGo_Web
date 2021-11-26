@@ -1,11 +1,10 @@
 import React from 'react';
 
 function Home(){
-
     return (
         <div>
             <div className="crow">
-                <img src="/assets/images/logo.png" alt="Logo" width="36%"/>
+                <img src="/assets/images/logo.png" alt="Logo" width="30%"/>
             </div>
             <div className="align-c">
                 <h3 className="home">A Platform to Guide and Help you in your Technical Journey</h3>
@@ -40,7 +39,7 @@ function Home(){
                         <img src="/assets/images/home/6.png" alt="Task Image" className="homeimg"/>
                     </div>
                     <div className="col-12 col-md-6 order-md-first data">
-                        Learn basic concepts of open source development.List your projects for getting support and contribute in projects of others.
+                        Learn basic concepts of open source development.List your projects for getting support and contribute in projects of others
                     </div>
                 </div>
                 <div className="row hrow align-c">
@@ -65,7 +64,7 @@ function Home(){
                         <img src="/assets/images/home/7.png" alt="Task Image" className="homeimg"/>
                     </div>
                     <div className="col-12 col-md-6 data">
-                        Make schedules and plans for upcoming exams and competitions to increase efficieny and for proper time utilization.
+                        Make schedules and plans for upcoming exams and competitions to increase efficieny and for proper time utilization
                     </div>
                 </div>
             </div>

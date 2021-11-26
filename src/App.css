@@ -229,6 +229,7 @@ background-image: url("https://www.transparenttextures.com/patterns/diagmonds-li
 }
 .margin-c{
   margin:10px 5px;
+  cursor: pointer!important;
 }
 
 .blogpic{
@@ -263,7 +264,7 @@ background-image: url("https://www.transparenttextures.com/patterns/diagmonds-li
   margin : 3rem 2rem;
 }
 .homeimg{
-  height : 23rem;
+  height : 17rem;
   max-width : 95%;
   margin: auto;
 }

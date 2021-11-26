@@ -234,27 +234,27 @@ export const addNews = (news) => ({
 export const fetchCompetitions = ()=>async(dispatch)=>{
     dispatch(compLoading());
     var date = new Date();
-    const proxyurl = "https://cors-anywhere.herokuapp.com/";
+    const proxyurl = "https://peaceful-inlet-00007.herokuapp.com/";
     const url =[
-        'https://clist.by/api/v1/contest/?resource__id=1',
-        'https://clist.by/api/v1/contest/?resource__id=2',
-        'https://clist.by/api/v1/contest/?resource__id=35',
-        'https://clist.by/api/v1/contest/?resource__id=102'
+        'https://clist.by/api/v1/contest/?username=StudGO&api_key=6435c0c6e2a47cf37f64a4cf096a920b8c096bf5&resource__id=1',
+        'https://clist.by/api/v1/contest/?username=StudGO&api_key=6435c0c6e2a47cf37f64a4cf096a920b8c096bf5&resource__id=2',
+        'https://clist.by/api/v1/contest/?username=StudGO&api_key=6435c0c6e2a47cf37f64a4cf096a920b8c096bf5&resource__id=35',
+        'https://clist.by/api/v1/contest/?username=StudGO&api_key=6435c0c6e2a47cf37f64a4cf096a920b8c096bf5&resource__id=102'
     ]
 
     var comp=[];
-    // const month = date.getMonth();
-    // date = toString()
+
 
     for( var i=0;i<4;i++){
 
-    await fetch(proxyurl+url[i]+'&order_by=start&format=json&start__gte='+date.getFullYear()+'-'+(parseInt(date.getMonth())+1).toString()+'-01T00%3A00%3A00',
+    await fetch(proxyurl + url[i]+'&order_by=start&format=json&start__gte='+date.getFullYear()+'-'+(parseInt(date.getMonth())+1).toString()+'-01T00%3A00%3A00',
         {
             headers: {
                 'Authorization': 'ApiKey StudGO:6435c0c6e2a47cf37f64a4cf096a920b8c096bf5',
             }
         })
         .then(response=>{
+            console.log(response);
             if(response.ok){
                 return response;//passed to below then
             }
@@ -516,7 +516,6 @@ export const updateProject = async(project)=>{
         return;
     }
     await firestore.collection('projects').doc(project.projectID).update(project)
-    //dispatch(fetchBlog());
 }
 
 export const projectsLoading = () => ({

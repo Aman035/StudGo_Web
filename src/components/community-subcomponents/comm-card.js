@@ -22,7 +22,7 @@ export default function MediaCard(props) {
   const classes = useStyles();
 
   return (
-    <div className="col-12 col-md-6 align-c mt-5">
+    <div className="col-12 col-md-6 align-c mt-5 mb-3">
     <Card className={classes.root}>
         <CardContent>
         <img src = {props.comm.image} alt="communities image" className="comm"/>
